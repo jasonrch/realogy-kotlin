@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.deyvi.realogyassesment.common.Resource
 import com.deyvi.realogyassesment.data.use_case.GetCharacters
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
+@HiltViewModel
 class CharactersListViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharacters
 ) : ViewModel() {
