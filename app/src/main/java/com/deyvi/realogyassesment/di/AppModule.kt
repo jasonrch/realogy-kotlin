@@ -2,6 +2,8 @@ package com.deyvi.realogyassesment.di
 
 import com.deyvi.realogyassesment.BuildConfig
 import com.deyvi.realogyassesment.data.remote.CharactersApi
+import com.deyvi.realogyassesment.data.repository.CharactersRepositoryImpl
+import com.deyvi.realogyassesment.domain.repository.CharactersRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,5 +24,11 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(CharactersApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCharactersRepository(api: CharactersApi): CharactersRepository {
+        return CharactersRepositoryImpl(api = api)
     }
 }
