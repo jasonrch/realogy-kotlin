@@ -30,14 +30,14 @@ android {
             dimension = "dev"
             versionNameSuffix = "-Simpsons"
             applicationId = "com.sample.simpsonsviewer"
-            buildConfigField "String", BASE_URL, "\"http://api.duckduckgo.com/\""
+            buildConfigField "String", BASE_URL, "\"https://api.duckduckgo.com/\""
             buildConfigField "String", QUERY, "\"?q=simpsons+characters&format=json\""
         }
         create("wire") {
             dimension = "dev"
             versionNameSuffix = "-Wire"
             applicationId = "com.sample.wireviewer"
-            buildConfigField "String", BASE_URL, "\"http://api.duckduckgo.com/\""
+            buildConfigField "String", BASE_URL, "\"https://api.duckduckgo.com/\""
             buildConfigField "String", QUERY, "\"?q=the+wire+characters&format=json\""
         }
     }
