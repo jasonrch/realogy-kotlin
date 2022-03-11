@@ -1,4 +1,4 @@
-package com.deyvi.realogyassesment.ui.theme
+package com.deyvi.realogyassesment.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
