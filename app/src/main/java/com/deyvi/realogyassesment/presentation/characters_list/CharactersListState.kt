@@ -1,9 +1,9 @@
 package com.deyvi.realogyassesment.presentation.characters_list
 
-import com.deyvi.realogyassesment.data.remote.dto.RelatedTopic
+import com.deyvi.realogyassesment.domain.model.CharacterObject
 
 data class CharactersListState(
     val isLoading: Boolean = false,
-    val characters: List<RelatedTopic> = emptyList(),
+    val characterObjects: List<CharacterObject> = emptyList(),
     val error: String = ""
 )

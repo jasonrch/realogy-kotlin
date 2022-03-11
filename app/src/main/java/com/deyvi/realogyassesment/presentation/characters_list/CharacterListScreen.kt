@@ -16,9 +16,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.deyvi.realogyassesment.common.Constants.CHARACTER_KEY
+import com.deyvi.realogyassesment.data.remote.dto.RelatedTopic
+import com.deyvi.realogyassesment.domain.model.CharacterObject
+import com.deyvi.realogyassesment.presentation.Screens
 import com.deyvi.realogyassesment.presentation.characters_list.component.CharacterItem
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.squareup.moshi.Moshi
+import java.net.URLEncoder
 
 @Composable
 fun CharactersListScreen(
@@ -36,8 +42,11 @@ fun CharactersListScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(state.characters) { character ->
-                    CharacterItem(relatedTopic = character)
+                items(state.characterObjects) { character ->
+                    CharacterItem(
+                        characterObject = character,
+                        onItemClick = { onCharacterClick(navController, character)}
+                    )
                 }
             }
 
@@ -50,6 +59,17 @@ fun CharactersListScreen(
             }
         }
     }
+}
+
+private fun onCharacterClick(navController: NavController, item: CharacterObject) {
+    val moshi = Moshi.Builder().build()
+    val jsonAdapter = moshi.adapter(CharacterObject::class.java).lenient()
+    val characterJson = jsonAdapter.toJson(item)
+    val characterEncoded = URLEncoder.encode(characterJson, "utf-8")
+
+    navController.navigate(
+        Screens.CharacterDetailScreen.route.replace("{$CHARACTER_KEY}", characterEncoded)
+    )
 }
 
 @Composable
@@ -67,9 +87,4 @@ fun ErrorComponent(error: String) {
             textAlign = TextAlign.Center
         )
     }
-}
-
-@Composable
-fun LoadingComponent() {
-
 }

@@ -4,7 +4,8 @@ import com.deyvi.realogyassesment.common.Constants.ERROR_HTTP_EXCEPTION
 import com.deyvi.realogyassesment.common.Constants.ERROR_IO_EXCEPTION
 import com.deyvi.realogyassesment.common.Constants.ERROR_UNKNOWN_EXCEPTION
 import com.deyvi.realogyassesment.common.Resource
-import com.deyvi.realogyassesment.data.remote.dto.RelatedTopic
+import com.deyvi.realogyassesment.data.remote.dto.toCharacter
+import com.deyvi.realogyassesment.domain.model.CharacterObject
 import com.deyvi.realogyassesment.domain.repository.CharactersRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -17,18 +18,19 @@ class GetCharacters @Inject constructor(
 ) {
 
     operator fun invoke()
-            : Flow<Resource<List<RelatedTopic>>> = flow {
+            : Flow<Resource<List<CharacterObject>>> = flow {
         try {
-            emit(Resource.Loading<List<RelatedTopic>>())
-            val characters = repo.getCharacters()
-            emit(Resource.Success<List<RelatedTopic>>(characters))
+            emit(Resource.Loading<List<CharacterObject>>())
+            val characters = repo.getCharacters().map { it.toCharacter() }
+
+            emit(Resource.Success<List<CharacterObject>>(characters))
         } catch (e: HttpException) {
-            emit(Resource.Error<List<RelatedTopic>>(e.localizedMessage ?: ERROR_HTTP_EXCEPTION))
+            emit(Resource.Error<List<CharacterObject>>(e.localizedMessage ?: ERROR_HTTP_EXCEPTION))
         } catch (e: IOException) {
-            emit(Resource.Error<List<RelatedTopic>>(ERROR_IO_EXCEPTION))
+            emit(Resource.Error<List<CharacterObject>>(ERROR_IO_EXCEPTION))
         } catch (e: Exception) {
             emit(
-                Resource.Error<List<RelatedTopic>>(e.localizedMessage ?: ERROR_UNKNOWN_EXCEPTION)
+                Resource.Error<List<CharacterObject>>(e.localizedMessage ?: ERROR_UNKNOWN_EXCEPTION)
             )
         }
     }

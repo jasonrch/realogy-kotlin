@@ -36,7 +36,7 @@ class CharactersListViewModel @Inject constructor(
                 is Resource.Success -> {
                     val characters = result.data
 
-                    _state.value = CharactersListState(characters = characters ?: emptyList())
+                    _state.value = CharactersListState(characterObjects = characters ?: emptyList())
                     _isRefreshing.emit(false)
                 }
                 is Resource.Error -> {
