@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.deyvi.realogyassesment.common.Resource
 import com.deyvi.realogyassesment.data.use_case.GetCharacters
+import com.deyvi.realogyassesment.domain.model.CharacterObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +24,8 @@ class CharactersListViewModel @Inject constructor(
     private val _state = mutableStateOf(CharactersListState())
     val state: State<CharactersListState> = _state
 
+    private var charactersList: List<CharacterObject> = emptyList()
+
     init {
         getCharacters()
     }
@@ -30,13 +34,25 @@ class CharactersListViewModel @Inject constructor(
         getCharacters()
     }
 
+    fun onSearchQueryUpdate(query: String) {
+        _state.value = CharactersListState(characterObjects = charactersList.filter {
+            it.name.lowercase().contains(
+                query.lowercase(Locale.getDefault())
+            )
+        })
+    }
+
+    fun clearSearchQuery() {
+        _state.value = CharactersListState(characterObjects = charactersList)
+    }
+
     private fun getCharacters() {
         getCharactersUseCase().onEach { result ->
             when (result) {
                 is Resource.Success -> {
-                    val characters = result.data
+                    charactersList = result.data ?: emptyList()
 
-                    _state.value = CharactersListState(characterObjects = characters ?: emptyList())
+                    _state.value = CharactersListState(characterObjects = charactersList)
                     _isRefreshing.emit(false)
                 }
                 is Resource.Error -> {
