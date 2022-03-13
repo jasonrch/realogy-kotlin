@@ -23,6 +23,7 @@ android {
 
     def BASE_URL = "BASE_URL"
     def QUERY = "QUERY"
+    def APP_NAME = "APP_NAME"
 
     flavorDimensions += "dev"
     productFlavors {
@@ -32,6 +33,7 @@ android {
             applicationId = "com.sample.simpsonsviewer"
             buildConfigField "String", BASE_URL, "\"https://api.duckduckgo.com/\""
             buildConfigField "String", QUERY, "\"?q=simpsons+characters&format=json\""
+            buildConfigField "String", APP_NAME, "\"The simpsons\""
         }
         create("wire") {
             dimension = "dev"
@@ -39,6 +41,7 @@ android {
             applicationId = "com.sample.wireviewer"
             buildConfigField "String", BASE_URL, "\"https://api.duckduckgo.com/\""
             buildConfigField "String", QUERY, "\"?q=the+wire+characters&format=json\""
+            buildConfigField "String", APP_NAME, "\"The Wire\""
         }
     }
 

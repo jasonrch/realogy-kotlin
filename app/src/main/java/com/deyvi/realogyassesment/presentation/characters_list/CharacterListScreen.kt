@@ -81,12 +81,12 @@ private fun onCharacterClick(
     val characterJson = jsonAdapter.toJson(item)
     val characterEncoded = URLEncoder.encode(characterJson, "utf-8")
 
-    viewModel.clearSearchQuery()
-    query.value = ""
-
     navController.navigate(
         Screens.CharacterDetailScreen.route.replace("{$CHARACTER_KEY}", characterEncoded)
     )
+
+    viewModel.clearSearchQuery()
+    query.value = ""
 }
 
 @Composable

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.deyvi.realogyassesment.BuildConfig
 import com.deyvi.realogyassesment.presentation.characters_list.CharactersListViewModel
 
 const val MAX_CHARS_LENGTH = 35
@@ -53,7 +54,7 @@ fun SearchBarComponent(
     ) {
         if (!isSearching.value) {
             TopAppBar(
-                title = { Text("Characters") },
+                title = { Text(BuildConfig.APP_NAME) },
                 actions = {
                     IconButton(onClick = { isSearching.value = true }) {
                         Icon(
