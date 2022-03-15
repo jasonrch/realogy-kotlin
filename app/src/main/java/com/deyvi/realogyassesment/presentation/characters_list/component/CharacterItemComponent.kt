@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -18,12 +20,18 @@ import com.deyvi.realogyassesment.domain.model.CharacterObject
 @Composable
 fun CharacterItem(
     characterObject: CharacterObject,
-    onItemClick: () -> Unit
+    onItemClick: () -> Unit,
 ) {
     Row(
-        modifier = Modifier.clickable {
-            onItemClick()
-        }
+        modifier = Modifier
+            .clickable { onItemClick() }
+            .background(
+                if(characterObject.isSelected) {
+                    Color.Cyan
+                } else {
+                    Color.Transparent
+                }
+            )
     ) {
         Column(modifier = Modifier.padding(start = 8.dp, top = 8.dp, end = 8.dp)) {
             Text(

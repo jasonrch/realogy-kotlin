@@ -24,6 +24,9 @@ class CharactersListViewModel @Inject constructor(
     private val _state = mutableStateOf(CharactersListState())
     val state: State<CharactersListState> = _state
 
+    private val _selectedCharacter = mutableStateOf(CharacterObject("", "", ""))
+    val selectedCharacter: State<CharacterObject> = _selectedCharacter
+
     private var charactersList: List<CharacterObject> = emptyList()
 
     init {
@@ -32,6 +35,11 @@ class CharactersListViewModel @Inject constructor(
 
     fun refreshCharacters() {
         getCharacters()
+        _selectedCharacter.value = CharacterObject("", "", "")
+    }
+
+    fun onCharacterSelected(selectedCharacter: CharacterObject) {
+        _selectedCharacter.value = selectedCharacter
     }
 
     fun onSearchQueryUpdate(query: String) {

@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.window.layout.WindowMetricsCalculator
 import com.deyvi.realogyassesment.common.Constants.CHARACTER_KEY
 import com.deyvi.realogyassesment.domain.model.CharacterObject
 import com.deyvi.realogyassesment.presentation.character_details.CharacterDetailScreen
@@ -17,6 +18,8 @@ import com.deyvi.realogyassesment.presentation.characters_list.CharactersListScr
 import com.deyvi.realogyassesment.presentation.ui.theme.RealogyAssesmentTheme
 import com.squareup.moshi.Moshi
 import dagger.hilt.android.AndroidEntryPoint
+
+enum class WindowSizeClass { COMPACT, MEDIUM, EXPANDED }
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -37,7 +40,7 @@ class MainActivity : ComponentActivity() {
                         composable(
                             route = Screens.CharactersListScreen.route
                         ) {
-                            CharactersListScreen(navController)
+                            CharactersListScreen(navController, showOnePane = shouldUseSinglePane())
                         }
                         composable(
                             route = Screens.CharacterDetailScreen.route
@@ -53,5 +56,29 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun shouldUseSinglePane(): Boolean {
+        val metrics = WindowMetricsCalculator.getOrCreate()
+            .computeCurrentWindowMetrics(this)
+
+        val widthDp = metrics.bounds.width() /
+                resources.displayMetrics.density
+        val widthWindowSizeClass = when {
+            widthDp < 600f -> WindowSizeClass.COMPACT
+            widthDp < 840f -> WindowSizeClass.MEDIUM
+            else -> WindowSizeClass.EXPANDED
+        }
+
+        val heightDp = metrics.bounds.height() /
+                resources.displayMetrics.density
+        val heightWindowSizeClass = when {
+            heightDp < 480f -> WindowSizeClass.COMPACT
+            heightDp < 900f -> WindowSizeClass.MEDIUM
+            else -> WindowSizeClass.EXPANDED
+        }
+
+        return widthWindowSizeClass != WindowSizeClass.EXPANDED &&
+                heightWindowSizeClass != WindowSizeClass.EXPANDED
     }
 }
