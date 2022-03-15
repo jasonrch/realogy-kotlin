@@ -8,7 +8,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
@@ -35,19 +34,36 @@ fun CharactersListScreen(
     viewModel: CharactersListViewModel = hiltViewModel(),
     showOnePane: Boolean,
 ) {
-    if (showOnePane) {
-        ShowOnePaneScreen(navController = navController, viewModel = viewModel)
-    } else {
-        ShowTwoPaneScreen(viewModel = viewModel)
-    }
-}
-
-@Composable
-fun ShowOnePaneScreen(navController: NavController, viewModel: CharactersListViewModel) {
     val state = viewModel.state.value
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     val query = remember { mutableStateOf("") }
 
+    if (showOnePane) {
+        ShowOnePaneScreen(
+            navController = navController,
+            viewModel = viewModel,
+            state = state,
+            isRefreshing = isRefreshing,
+            query = query
+        )
+    } else {
+        ShowTwoPaneScreen(
+            viewModel = viewModel,
+            state = state,
+            isRefreshing = isRefreshing,
+            query = query
+        )
+    }
+}
+
+@Composable
+fun ShowOnePaneScreen(
+    navController: NavController,
+    viewModel: CharactersListViewModel,
+    state: CharactersListState,
+    isRefreshing: Boolean,
+    query: MutableState<String>
+) {
     Column() {
         SearchBarComponent(query = query)
 
@@ -85,13 +101,13 @@ fun ShowOnePaneScreen(navController: NavController, viewModel: CharactersListVie
 }
 
 @Composable
-fun ShowTwoPaneScreen(viewModel: CharactersListViewModel) {
+fun ShowTwoPaneScreen(
+    viewModel: CharactersListViewModel,
+    state: CharactersListState,
+    isRefreshing: Boolean,
+    query: MutableState<String>
+) {
     val selectedCharacter = viewModel.selectedCharacter
-
-    val state = viewModel.state.value
-    val isRefreshing by viewModel.isRefreshing.collectAsState()
-    val query = remember { mutableStateOf("") }
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
